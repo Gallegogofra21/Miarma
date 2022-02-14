@@ -1,5 +1,9 @@
 package com.salesianos.triana.dam.Miarma.security;
 
+import com.salesianos.triana.dam.Miarma.security.dto.JwtUserResponse;
+import com.salesianos.triana.dam.Miarma.security.dto.LoginDto;
+import com.salesianos.triana.dam.Miarma.security.jwt.JwtProvider;
+import com.salesianos.triana.dam.Miarma.users.model.Usuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +54,6 @@ public class AuthenticationController {
                 .nombre(user.getNombre())
                 .email(user.getEmail())
                 .avatar(user.getAvatar())
-                .rol(user.getRol().name())
                 .token(jwt)
                 .build();
     }

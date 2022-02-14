@@ -24,7 +24,7 @@ public class UserController {
     private final PaginationLinksUtil paginationLinksUtil;
 
     @PostMapping("/auth/register")
-    public ResponseEntity<CreateUserDto> nuevoUser (@RequestPart("file") MultipartFile file, @RequestBody CreateUserDto newUser) {
+    public ResponseEntity<CreateUserDto> nuevoUser (@RequestPart("file") MultipartFile file, @RequestPart("user") CreateUserDto newUser) {
         Usuario saved = userEntityService.saveUser(newUser, file);
 
         if(saved == null)

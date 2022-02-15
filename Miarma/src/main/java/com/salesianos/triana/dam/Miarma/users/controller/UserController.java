@@ -1,6 +1,7 @@
 package com.salesianos.triana.dam.Miarma.users.controller;
 
 import com.salesianos.triana.dam.Miarma.users.dto.CreateUserDto;
+import com.salesianos.triana.dam.Miarma.users.dto.GetUserDto;
 import com.salesianos.triana.dam.Miarma.users.dto.UserDtoConverter;
 import com.salesianos.triana.dam.Miarma.users.model.Usuario;
 import com.salesianos.triana.dam.Miarma.users.repo.UserEntityRepository;
@@ -24,7 +25,7 @@ public class UserController {
     private final PaginationLinksUtil paginationLinksUtil;
 
     @PostMapping("/auth/register")
-    public ResponseEntity<CreateUserDto> nuevoUser (@RequestPart("file") MultipartFile file, @RequestPart("user") CreateUserDto newUser) {
+    public ResponseEntity<GetUserDto> nuevoUser (@RequestPart("file") MultipartFile file, @RequestPart("user") CreateUserDto newUser) {
         Usuario saved = userEntityService.saveUser(newUser, file);
 
         if(saved == null)

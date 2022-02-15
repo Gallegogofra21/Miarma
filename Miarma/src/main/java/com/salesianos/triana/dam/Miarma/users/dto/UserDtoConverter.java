@@ -6,14 +6,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserDtoConverter {
 
-    public CreateUserDto convertUsuarioToNewUser(Usuario p) {
-        return CreateUserDto.builder()
+    public GetUserDto convertUsuarioToNewUser(Usuario p) {
+        return GetUserDto.builder()
                 .username(p.getUsername())
+                .nombre(p.getNombre())
                 .email(p.getEmail())
                 .avatar(p.getAvatar())
-                .password(p.getPassword())
-                .password2(p.getPassword())
-                .nombre(p.getNombre())
                 .build();
     }
 

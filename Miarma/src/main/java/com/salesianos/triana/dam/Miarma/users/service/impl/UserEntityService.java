@@ -45,7 +45,8 @@ public class UserEntityService extends BaseService<Usuario, Long, UserEntityRepo
 
         if(newUser.getPassword().contentEquals(newUser.getPassword2())) {
             Usuario usuario = Usuario.builder()
-                    .password(passwordEncoder.encode(newUser.getPassword2()))
+                    .username(newUser.getUsername())
+                    .password(passwordEncoder.encode(newUser.getPassword()))
                     .avatar(uri)
                     .nombre(newUser.getNombre())
                     .email(newUser.getEmail())

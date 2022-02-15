@@ -11,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Collection;
 
 @Entity
@@ -27,6 +28,9 @@ public class Usuario implements UserDetails {
     private String nombre;
     private String apellidos;
     private String direccion;
+    private String username;
+
+    private LocalDate fechaNacimiento;
 
     @NaturalId
     @Column(unique = true, updatable = false)
@@ -40,28 +44,24 @@ public class Usuario implements UserDetails {
         return null;
     }
 
-    @Override
-    public String getUsername() {
-        return null;
-    }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

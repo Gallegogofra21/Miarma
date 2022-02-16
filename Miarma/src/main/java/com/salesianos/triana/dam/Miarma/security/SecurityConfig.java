@@ -48,11 +48,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/h2-console/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth/**").anonymous()
-                .antMatchers(HttpMethod.GET, "/download/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/me").permitAll()
-                .antMatchers(HttpMethod.POST, "/post/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/download/**").authenticated()
+                .antMatchers(HttpMethod.GET, "/me").authenticated()
+                .antMatchers(HttpMethod.POST, "/post/**").authenticated()
+                .antMatchers(HttpMethod.PUT, "/post/**").authenticated()
+                .antMatchers(HttpMethod.PUT, "/profile/me").authenticated()
+                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/error").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);

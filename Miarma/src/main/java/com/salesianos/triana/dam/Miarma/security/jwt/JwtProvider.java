@@ -3,16 +3,19 @@ package com.salesianos.triana.dam.Miarma.security.jwt;
 import com.salesianos.triana.dam.Miarma.users.model.Usuario;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+
 import javax.annotation.PostConstruct;
+import java.security.Key;
+import java.security.SignatureException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.UUID;
 
 @Log
 @Service

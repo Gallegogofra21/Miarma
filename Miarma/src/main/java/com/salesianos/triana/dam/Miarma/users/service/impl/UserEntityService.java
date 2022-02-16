@@ -1,8 +1,11 @@
 package com.salesianos.triana.dam.Miarma.users.service.impl;
 
+import com.salesianos.triana.dam.Miarma.exception.SingleEntityNotFoundException;
+import com.salesianos.triana.dam.Miarma.exception.SingleEntityNotFoundException2;
 import com.salesianos.triana.dam.Miarma.service.BaseService;
 import com.salesianos.triana.dam.Miarma.service.StorageService;
 import com.salesianos.triana.dam.Miarma.users.dto.CreateUserDto;
+import com.salesianos.triana.dam.Miarma.users.dto.GetUserDto;
 import com.salesianos.triana.dam.Miarma.users.model.Usuario;
 import com.salesianos.triana.dam.Miarma.users.repo.UserEntityRepository;
 import lombok.RequiredArgsConstructor;
@@ -55,5 +58,29 @@ public class UserEntityService extends BaseService<Usuario, Long, UserEntityRepo
             }else {
             return null;
         }
+    }
+
+    public Usuario edit (CreateUserDto newUser, MultipartFile file, Usuario currentUser) {
+
+        String email = currentUser.getEmail();
+
+        String filename = storageService.store(file);
+
+        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/download/")
+                .path(filename)
+                .toUriString();
+
+        return repositorio.findFirstByEmail(currentUser.getEmail()).map(c -> {
+            c.setNombre(newUser.getNombre());
+            c.setEmail(newUser.getEmail());
+            c.setUsername(newUser.getUsername());
+            c.setPassword(newUser.getPassword());
+            c.setPassword2(newUser.getPassword2());
+            c.setAvatar(uri);
+            return repositorio.save(c);
+
+        }).orElseThrow(() -> new SingleEntityNotFoundException2(email, Usuario.class));
+
     }
 }

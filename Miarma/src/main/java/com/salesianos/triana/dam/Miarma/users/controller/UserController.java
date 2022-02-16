@@ -8,11 +8,10 @@ import com.salesianos.triana.dam.Miarma.users.repo.UserEntityRepository;
 import com.salesianos.triana.dam.Miarma.users.service.impl.UserEntityService;
 import com.salesianos.triana.dam.Miarma.util.PaginationLinksUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -32,5 +31,10 @@ public class UserController {
             return ResponseEntity.badRequest().build();
         else
             return ResponseEntity.ok(userDtoConverter.convertUsuarioToNewUser(saved));
+    }
+
+    @PutMapping("/profile/me")
+    public ResponseEntity<?> editPost (@RequestPart("file") MultipartFile file, @RequestPart("user") CreateUserDto newUser, @AuthenticationPrincipal Usuario currentUser){
+        return ResponseEntity.status(HttpStatus.CREATED).body(userEntityService.edit(newUser, file, currentUser));
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
+
     private final UserEntityService usuarioService;
     private final JwtProvider jwtProvider;
 
@@ -40,13 +42,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     UsernamePasswordAuthenticationToken authenticacion =
                             new UsernamePasswordAuthenticationToken(
                                     user,
+                                    user.getPerfil(),
                                     user.getAuthorities()
                             );
                     authenticacion.setDetails(new WebAuthenticationDetails(request));
 
                     SecurityContextHolder.getContext().setAuthentication(authenticacion);
                 }
-
             }
         }catch (Exception ex) {
             log.info("No se ha podido establecer el contexto de seguridad (" + ex.getMessage() + ")");

@@ -1,10 +1,11 @@
 package com.salesianos.triana.dam.Miarma.service.impl;
 
 import com.salesianos.triana.dam.Miarma.config.StorageProperties;
-import com.salesianos.triana.dam.Miarma.exception.FileNotFoundException;
-import com.salesianos.triana.dam.Miarma.exception.StorageException;
+import com.salesianos.triana.dam.Miarma.errores.exception.FileNotFoundException;
+import com.salesianos.triana.dam.Miarma.errores.exception.StorageException;
 import com.salesianos.triana.dam.Miarma.service.StorageService;
 import com.salesianos.triana.dam.Miarma.util.MediaTypeUrlResource;
+import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -112,4 +114,10 @@ public class FileSystemStorageImpl implements StorageService {
     public void deleteAll() {
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
     }
+
+    @Override
+    public BufferedImage resizer(BufferedImage img, int width){
+        return Scalr.resize(img, width);
+    }
+
 }

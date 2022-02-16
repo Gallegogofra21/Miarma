@@ -1,6 +1,6 @@
 package com.salesianos.triana.dam.Miarma.util;
 
-import com.salesianos.triana.dam.Miarma.exception.StorageException;
+import com.salesianos.triana.dam.Miarma.errores.exception.StorageException;
 import org.apache.tika.Tika;
 import org.springframework.core.io.UrlResource;
 

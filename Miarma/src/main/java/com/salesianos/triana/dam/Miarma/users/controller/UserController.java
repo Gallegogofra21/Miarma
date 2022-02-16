@@ -14,6 +14,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -34,7 +36,12 @@ public class UserController {
     }
 
     @PutMapping("/profile/me")
-    public ResponseEntity<?> editPost (@RequestPart("file") MultipartFile file, @RequestPart("user") CreateUserDto newUser, @AuthenticationPrincipal Usuario currentUser){
-        return ResponseEntity.status(HttpStatus.CREATED).body(userEntityService.edit(newUser, file, currentUser));
+    public ResponseEntity<GetUserDto> editPost (@RequestPart("file") MultipartFile file, @RequestPart("user") CreateUserDto newUser, @AuthenticationPrincipal Usuario currentUser) throws IOException {
+        Usuario saved = userEntityService.edit(newUser, file, currentUser);
+
+        if(saved == null)
+            return ResponseEntity.badRequest().build();
+        else
+            return ResponseEntity.ok(userDtoConverter.convertUsuarioToNewUser(saved));
     }
 }

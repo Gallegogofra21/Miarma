@@ -13,4 +13,5 @@ public class GetPostDto {
     private String titulo;
     private String texto;
     private String file;
+    private String usuario;
 }

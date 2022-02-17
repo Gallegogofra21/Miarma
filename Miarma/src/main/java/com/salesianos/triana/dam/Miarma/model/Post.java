@@ -1,11 +1,9 @@
 package com.salesianos.triana.dam.Miarma.model;
 
+import com.salesianos.triana.dam.Miarma.users.model.Usuario;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -26,5 +24,11 @@ public class Post implements Serializable {
 
     private String file;
 
-    private boolean publica;
+    private String reescalada;
+
+    private Public publica;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", foreignKey = @ForeignKey(name = "FK_POST_USUARIO"))
+    private Usuario usuario;
 }

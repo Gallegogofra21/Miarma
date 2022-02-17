@@ -1,4 +1,4 @@
-package com.salesianos.triana.dam.Miarma.exception;
+package com.salesianos.triana.dam.Miarma.errores.exception;
 
 public class StorageException extends RuntimeException{
 

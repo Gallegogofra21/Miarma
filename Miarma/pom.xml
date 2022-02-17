@@ -60,6 +60,11 @@
 			<version>1.5.2</version>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>2.6.1</version>
+		</dependency>
+		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
 			<version>0.11.1</version>
@@ -75,10 +80,6 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>0.11.1</version>
 			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-web</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.tika</groupId>

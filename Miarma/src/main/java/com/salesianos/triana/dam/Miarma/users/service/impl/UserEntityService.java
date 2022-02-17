@@ -110,4 +110,6 @@ public class UserEntityService extends BaseService<Usuario, Long, UserEntityRepo
     public boolean comprobarUsername(String username) {
         return repositorio.existsByUsername(username);
     }
+
+    public boolean comprobarEmail(String email){ return repositorio.existsByEmail(email);}
 }

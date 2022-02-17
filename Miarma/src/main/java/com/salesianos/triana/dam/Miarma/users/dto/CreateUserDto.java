@@ -1,6 +1,7 @@
 package com.salesianos.triana.dam.Miarma.users.dto;
 
 import com.salesianos.triana.dam.Miarma.users.model.Perfil;
+import com.salesianos.triana.dam.Miarma.validacion.anotaciones.UniqueEmailUser;
 import com.salesianos.triana.dam.Miarma.validacion.anotaciones.UniqueUsernameUser;
 import lombok.*;
 
@@ -20,12 +21,13 @@ public class CreateUserDto {
     private String username;
     @NotBlank(message = "{user.name.blank}")
     private String nombre;
-    @NotBlank(message = "{user.emai.blank}")
+    @NotBlank(message = "{user.email.blank}")
     @UniqueEmailUser(message = "{user.email.unique}")
     private String email;
     private LocalDate fechaNacimiento;
     private String password;
     private String password2;
     private String avatar;
+    @NotBlank(message = "{user.perfil.bank}")
     private Perfil perfil;
 }

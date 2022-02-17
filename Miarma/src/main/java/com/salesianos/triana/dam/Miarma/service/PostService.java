@@ -14,11 +14,11 @@ import java.util.Optional;
 public interface PostService {
 
     Post createPostPublic(CreatePostDto createPostDto, MultipartFile file, Usuario usuario) throws IOException;
-    Post createPostPrivate(CreatePostDto createPostDto, MultipartFile file, Usuario usuario) throws IOException;
     List<GetPostDto> findAll();
     Post findById(Long id);
     Post edit(CreatePostDto createPostDto, MultipartFile file, Long id);
     ResponseEntity<?> delete(Long id, Usuario usuario) throws IOException;
     List<GetPostDto> findAllPublic();
     List<GetPostDto> findAllByUser(String username);
+    List<GetPostDto> findAllByLoggedUser(Usuario usuario);
 }

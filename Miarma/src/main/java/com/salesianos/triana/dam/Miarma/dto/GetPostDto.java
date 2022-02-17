@@ -1,5 +1,6 @@
 package com.salesianos.triana.dam.Miarma.dto;
 
+import com.salesianos.triana.dam.Miarma.model.Public;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,4 +15,5 @@ public class GetPostDto {
     private String texto;
     private String file;
     private String usuario;
+    private Public publica;
 }

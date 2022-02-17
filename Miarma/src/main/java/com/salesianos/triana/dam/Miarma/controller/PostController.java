@@ -24,7 +24,7 @@ public class PostController {
 
     @GetMapping("/")
     public ResponseEntity<?> findAll() {
-        return ResponseEntity.ok(postService.findAll());
+        return ResponseEntity.ok(postService.findAllPublic());
     }
 
     @GetMapping("/{id}")
@@ -33,22 +33,27 @@ public class PostController {
     }
 
     @GetMapping("/post/{username}")
-    public ResponseEntity<?> findAllByUser(@RequestParam String username) {
+    public ResponseEntity<?> findAllByUser(@RequestParam(name = "username") String username) {
         return ResponseEntity.ok(postService.findAllByUser(username));
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<?> findAllByLoggedUser(@AuthenticationPrincipal Usuario usuario) {
+        return ResponseEntity.ok(postService.findAllByLoggedUser(usuario));
+    }
+
     @PostMapping("/")
-    public ResponseEntity<?> create (@RequestPart("file")MultipartFile file, @RequestPart("post")CreatePostDto newPost, @AuthenticationPrincipal Usuario usuario) throws IOException {
+    public ResponseEntity<?> create(@RequestPart("file") MultipartFile file, @RequestPart("post") CreatePostDto newPost, @AuthenticationPrincipal Usuario usuario) throws IOException {
         return ResponseEntity.status(HttpStatus.CREATED).body(postService.createPostPublic(newPost, file, usuario));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> editPost (@PathVariable Long id, @RequestPart("post") CreatePostDto newPost, @RequestPart("file") MultipartFile file){
+    public ResponseEntity<?> editPost(@PathVariable Long id, @RequestPart("post") CreatePostDto newPost, @RequestPart("file") MultipartFile file) {
         return ResponseEntity.status(HttpStatus.CREATED).body(postService.edit(newPost, file, id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePost (@PathVariable Long id, @AuthenticationPrincipal Usuario usuario) throws IOException {
+    public ResponseEntity<?> deletePost(@PathVariable Long id, @AuthenticationPrincipal Usuario usuario) throws IOException {
         postService.delete(id, usuario);
         return ResponseEntity.noContent().build();
     }

@@ -12,6 +12,7 @@ public class UserDtoConverter {
                 .nombre(p.getNombre())
                 .email(p.getEmail())
                 .avatar(p.getAvatar())
+                .perfil(p.getPerfil())
                 .build();
     }
 

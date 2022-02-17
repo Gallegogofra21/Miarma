@@ -12,6 +12,7 @@ public class ConverterPostDto {
                 .texto(p.getTexto())
                 .file(p.getFile())
                 .usuario(p.getUsuario().getUsername())
+                .publica(p.getPublica())
                 .build();
     }
 }

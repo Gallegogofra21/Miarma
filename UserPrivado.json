@@ -1,0 +1,9 @@
+{
+    "username" :"Usuario2",
+    "nombre":"Guille",
+    "email":"Usuario2@gmail.com",
+    "fechaNacimiento":"2002-02-02",
+    "password":"123456789",
+    "password2":"123456789",
+    "perfil":"PRIVADO"
+}

@@ -45,6 +45,10 @@ public class UserEntityService extends BaseService<Usuario, Long, UserEntityRepo
         return repositorio.findById(id).orElseThrow(() -> new SingleEntityNotFoundException(id.toString(), Usuario.class));
     }
 
+    public Usuario findUserPublic(Long id){
+        return repositorio.findUserPublic(id).orElseThrow(() -> new SingleEntityNotFoundException(id.toString(), Usuario.class));
+    }
+
     public Usuario saveUser (CreateUserDto newUser, MultipartFile file) {
 
         String filename = storageService.store(file);
@@ -61,6 +65,7 @@ public class UserEntityService extends BaseService<Usuario, Long, UserEntityRepo
                     .avatar(uri)
                     .nombre(newUser.getNombre())
                     .email(newUser.getEmail())
+                    .perfil(newUser.getPerfil())
                     .build();
             return save(usuario);
             }else {
@@ -100,5 +105,9 @@ public class UserEntityService extends BaseService<Usuario, Long, UserEntityRepo
 
         }).orElseThrow(() -> new SingleEntityNotFoundException2(email, Usuario.class));
 
+    }
+
+    public boolean comprobarUsername(String username) {
+        return repositorio.existsByUsername(username);
     }
 }

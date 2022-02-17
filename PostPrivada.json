@@ -1,5 +1,5 @@
 {
     "titulo":"Titulo1",
     "texto":"Texto1",
-    "publica":false
+    "aPublic":"PRIVADA"
 }

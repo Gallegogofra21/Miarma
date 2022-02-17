@@ -25,6 +25,11 @@ public class UserController {
     private final UserDtoConverter userDtoConverter;
     private final PaginationLinksUtil paginationLinksUtil;
 
+    @GetMapping("/profile/{id}")
+    public Usuario findOne(@PathVariable Long id) {
+        return userEntityService.findUserPublic(id);
+    }
+
     @PostMapping("/auth/register")
     public ResponseEntity<GetUserDto> nuevoUser (@RequestPart("file") MultipartFile file, @RequestPart("user") CreateUserDto newUser) {
         Usuario saved = userEntityService.saveUser(newUser, file);

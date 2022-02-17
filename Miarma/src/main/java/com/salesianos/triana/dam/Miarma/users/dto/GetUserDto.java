@@ -1,5 +1,6 @@
 package com.salesianos.triana.dam.Miarma.users.dto;
 
+import com.salesianos.triana.dam.Miarma.users.model.Perfil;
 import lombok.*;
 
 @Getter
@@ -13,4 +14,5 @@ public class GetUserDto {
     private String nombre;
     private String email;
     private String avatar;
+    private Perfil perfil;
 }

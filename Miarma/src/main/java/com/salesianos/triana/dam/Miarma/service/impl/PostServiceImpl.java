@@ -19,6 +19,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -90,40 +91,7 @@ public class PostServiceImpl implements PostService {
         return repository.save(Post.builder()
                 .titulo(createPostDto.getTitulo())
                 .texto(createPostDto.getTexto())
-                .publica(Public.PUBLICA)
-                .file(uri2)
-                .reescalada(uri)
-                .usuario(userEntityService.findUserById(usuario.getId()))
-                .build());
-    }
-
-    @Override
-    public Post createPostPrivate(CreatePostDto createPostDto, MultipartFile file, Usuario usuario) throws IOException {
-        String filename = storageService.store(file);
-
-        String extension = StringUtils.getFilenameExtension(filename);
-
-        BufferedImage img = ImageIO.read(file.getInputStream());
-
-        BufferedImage imgScale = storageService.resizer(img, 1024);
-
-        OutputStream out = Files.newOutputStream(storageService.load(filename));
-
-        ImageIO.write(imgScale, extension, out);
-
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(filename)
-                .toUriString();
-        String uri2 = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(storageService.store(file))
-                .toUriString();
-
-        return repository.save(Post.builder()
-                .titulo(createPostDto.getTitulo())
-                .texto(createPostDto.getTexto())
-                .publica(Public.PUBLICA)
+                .publica(createPostDto.getAPublic())
                 .file(uri2)
                 .reescalada(uri)
                 .usuario(userEntityService.findUserById(usuario.getId()))
@@ -132,11 +100,21 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post findById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new SingleEntityNotFoundException(id.toString(), Post.class));
+        return repository.findOnePublic(id).orElseThrow(() -> new SingleEntityNotFoundException(id.toString(), Post.class));
     }
 
-    public List<GetPostDto> findAllByUser(String username) {
+    public List<GetPostDto> findAllByUser(@RequestParam(name = "username") String username) {
         List<Post> data = repository.findAllByUser(username);
+
+        if(data.isEmpty()) {
+            throw new ListEntityNotFoundException(Post.class);
+        }else {
+            return data.stream().map(converter::getPostToDto).collect(Collectors.toList());
+        }
+    }
+
+    public List<GetPostDto> findAllByLoggedUser(@AuthenticationPrincipal Usuario usuario) {
+        List<Post> data = repository.findAllByLoggedUser(usuario.getUsername());
 
         if(data.isEmpty()) {
             throw new ListEntityNotFoundException(Post.class);
@@ -167,6 +145,7 @@ public class PostServiceImpl implements PostService {
         Post post = repository.findById(id).orElseThrow(() -> new SingleEntityNotFoundException(id.toString(), Post.class));
         if(usuario.getId().equals(post.getUsuario().getId())){
             storageService.deleteFile(post.getFile());
+            storageService.deleteFile(post.getReescalada());
             repository.delete(post);
         }else {
             return ResponseEntity.notFound().build();

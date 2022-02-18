@@ -71,31 +71,42 @@ public class PostServiceImpl implements PostService {
 
         String extension = StringUtils.getFilenameExtension(filename);
 
-        BufferedImage img = ImageIO.read(file.getInputStream());
 
-        BufferedImage imgScale = storageService.resizer(img, 1024);
-
-        OutputStream out = Files.newOutputStream(storageService.load(filename));
-
-        ImageIO.write(imgScale, extension, out);
-
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+        String uri2 = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/download/")
                 .path(filename)
                 .toUriString();
-        String uri2 = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(storageService.store(file))
-                .toUriString();
 
-        return repository.save(Post.builder()
+        Post newPost = Post.builder()
                 .titulo(createPostDto.getTitulo())
                 .texto(createPostDto.getTexto())
                 .publica(createPostDto.getAPublic())
                 .file(uri2)
-                .reescalada(uri)
                 .usuario(userEntityService.findUserById(usuario.getId()))
-                .build());
+                .build();
+
+        List<String> extensiones = List.of("avi", "wmv", "asf", "mov", "flv", "rm", "rmvb", "mp4", "mkv", "mks", "3gpp");
+
+        if(extensiones.contains(extension)) {
+            newPost.setFile(uri2);
+            newPost.setReescalada(uri2);
+        } else {
+            BufferedImage img = ImageIO.read(file.getInputStream());
+            BufferedImage imgScale = storageService.resizer(img, 1024);
+
+
+            OutputStream out = Files.newOutputStream(storageService.load(filename));
+
+            ImageIO.write(imgScale, extension, out);
+
+            String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/download/")
+                    .path(storageService.store(file))
+                    .toUriString();
+            newPost.setFile(uri);
+            newPost.setReescalada(uri2);
+        }
+        return repository.save(newPost);
     }
 
     @Override
@@ -123,20 +134,30 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-    public Post edit(CreatePostDto createPostDto, MultipartFile file, Long id) {
-        String filename = storageService.store(file);
+    @Override
+    public Post edit(CreatePostDto createPostDto, MultipartFile file, Long id, Usuario usuario) {
 
-        String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/")
-                .path(filename)
-                .toUriString();
+        Post post = repository.findById(id).orElseThrow(() -> new SingleEntityNotFoundException(id.toString(), Post.class));
 
-        return repository.findById(id).map(c -> {
-            c.setTitulo(createPostDto.getTitulo());
-            c.setTexto(createPostDto.getTexto());
-            c.setFile(uri);
-            return repository.save(c);
-        }).orElseThrow(() -> new SingleEntityNotFoundException(id.toString(), Post.class));
+        if(post.getUsuario().getId().equals(usuario.getId())) {
+            String filename = storageService.store(file);
+
+            String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/download/")
+                    .path(filename)
+                    .toUriString();
+
+            return repository.findById(id).map(c -> {
+                c.setTitulo(createPostDto.getTitulo());
+                c.setTexto(createPostDto.getTexto());
+                c.setFile(uri);
+                return repository.save(c);
+            }).orElseThrow(() -> new SingleEntityNotFoundException(id.toString(), Post.class));
+        }
+
+        throw new SingleEntityNotFoundException(id.toString(), Post.class);
+
+
 
     }
 

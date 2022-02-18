@@ -28,6 +28,5 @@ public class CreateUserDto {
     private String password;
     private String password2;
     private String avatar;
-    @NotBlank(message = "{user.perfil.bank}")
     private Perfil perfil;
 }

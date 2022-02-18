@@ -15,7 +15,6 @@ public class CreatePostDto {
 
     private String texto;
 
-    @NotBlank(message = "{post.aPublic.blank}")
     private Public aPublic;
 
     private String file;

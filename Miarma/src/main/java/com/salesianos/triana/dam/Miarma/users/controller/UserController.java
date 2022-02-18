@@ -11,13 +11,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
+@Validated
 public class UserController {
 
     private final UserEntityService userEntityService;
@@ -31,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping("/auth/register")
-    public ResponseEntity<GetUserDto> nuevoUser (@RequestPart("file") MultipartFile file, @RequestPart("user") CreateUserDto newUser) {
+    public ResponseEntity<GetUserDto> nuevoUser ( @RequestPart("file") MultipartFile file, @Valid @RequestPart("user") CreateUserDto newUser) {
         Usuario saved = userEntityService.saveUser(newUser, file);
 
         if(saved == null)
@@ -41,7 +44,7 @@ public class UserController {
     }
 
     @PutMapping("/profile/me")
-    public ResponseEntity<GetUserDto> editPost (@RequestPart("file") MultipartFile file, @RequestPart("user") CreateUserDto newUser, @AuthenticationPrincipal Usuario currentUser) throws IOException {
+    public ResponseEntity<GetUserDto> editPost (@RequestPart("file") MultipartFile file, @Valid @RequestPart("user") CreateUserDto newUser, @AuthenticationPrincipal Usuario currentUser) throws IOException {
         Usuario saved = userEntityService.edit(newUser, file, currentUser);
 
         if(saved == null)

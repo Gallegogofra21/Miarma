@@ -1,0 +1,8 @@
+{
+    "username" :"Usuario1",
+    "nombre":"Fran",
+    "fechaNacimiento":"2002-02-02",
+    "password":"123456789",
+    "password2":"123456789",
+    "perfil":"PUBLICO"
+}

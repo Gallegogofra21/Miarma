@@ -16,7 +16,7 @@ public interface PostService {
     Post createPostPublic(CreatePostDto createPostDto, MultipartFile file, Usuario usuario) throws IOException;
     List<GetPostDto> findAll();
     Post findById(Long id);
-    Post edit(CreatePostDto createPostDto, MultipartFile file, Long id);
+    Post edit(CreatePostDto createPostDto, MultipartFile file, Long id, Usuario usuario);
     ResponseEntity<?> delete(Long id, Usuario usuario) throws IOException;
     List<GetPostDto> findAllPublic();
     List<GetPostDto> findAllByUser(String username);

@@ -9,15 +9,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/post")
 @RequiredArgsConstructor
+@Validated
 public class PostController {
 
     private final PostService postService;
@@ -43,13 +46,13 @@ public class PostController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> create(@RequestPart("file") MultipartFile file, @RequestPart("post") CreatePostDto newPost, @AuthenticationPrincipal Usuario usuario) throws IOException {
+    public ResponseEntity<?> create(@RequestPart("file") MultipartFile file, @Valid @RequestPart("post") CreatePostDto newPost, @AuthenticationPrincipal Usuario usuario) throws IOException {
         return ResponseEntity.status(HttpStatus.CREATED).body(postService.createPostPublic(newPost, file, usuario));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> editPost(@PathVariable Long id, @RequestPart("post") CreatePostDto newPost, @RequestPart("file") MultipartFile file) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(postService.edit(newPost, file, id));
+    public ResponseEntity<?> editPost(@PathVariable Long id, @Valid @RequestPart("post") CreatePostDto newPost, @RequestPart("file") MultipartFile file, @AuthenticationPrincipal Usuario usuario) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(postService.edit(newPost, file, id, usuario));
     }
 
     @DeleteMapping("/{id}")

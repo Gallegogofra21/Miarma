@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.imageio.ImageIO;
+import javax.validation.Valid;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -49,7 +50,7 @@ public class UserEntityService extends BaseService<Usuario, Long, UserEntityRepo
         return repositorio.findUserPublic(id).orElseThrow(() -> new SingleEntityNotFoundException(id.toString(), Usuario.class));
     }
 
-    public Usuario saveUser (CreateUserDto newUser, MultipartFile file) {
+    public Usuario saveUser (@Valid CreateUserDto newUser, MultipartFile file) {
 
         String filename = storageService.store(file);
 
